@@ -1,8 +1,8 @@
 - name: Créer l'utilisateur simon
   tags: user
   user:
-  name: simon
-  groups: root
+    name: simon
+    groups: root
 - name: Ajouter la clé SSH pour simon
   tags: ssh_key
   authorized_key:
