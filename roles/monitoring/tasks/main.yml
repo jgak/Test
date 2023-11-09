@@ -1,0 +1,15 @@
+- name: Copier fichier HTML vers /tmp
+  copy:
+    src: default_site.html
+    dest: /tmp/ansible.html
+    owner: root
+    group: root
+    mode: 0644
+- name: Stopper Apache
+  tags: apache2
+  service:
+    name: apache2
+    state: stopped
+    enabled: no
+  register: httpd
+  when: ansible_distribution in ['Debian']

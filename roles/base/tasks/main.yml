@@ -1,0 +1,10 @@
+- name: Créer l'utilisateur simon
+  tags: user
+  user:
+  name: simon
+  groups: root
+- name: Ajouter la clé SSH pour simon
+  tags: ssh_key
+  authorized_key:
+    user: simon
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFme0Xj5BjYOYj+OM/pdPelZLYZ1Zylx3tD1wX0JoaAb ansible"

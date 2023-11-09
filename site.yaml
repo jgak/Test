@@ -6,62 +6,14 @@
     tags: always
     package:
       #upgrade: dist
-      #update_cache: yes
+      update_cache: yes
 
 - hosts: all
   become: yes
-  tasks:
-    - name: Créer l'utilisateur simon
-      tags: user
-      user:
-        name: simon
-        groups: root
-    - name: Ajouter la clé SSH pour simon
-      tags: ssh_key
-      authorized_key:
-        user: simon
-        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFme0Xj5BjYOYj+OM/pdPelZLYZ1Zylx3tD1wX0JoaAb ansible"
-    - name: Ajouter  simon aux sudoers
-      tags: sudo
-      copy:
-        src: sudoers_simon
-        dest: /etc/sudoers.d/simon
-        owner: root
-        group: root
-        mode: 0440
-    #- name: Supprimer l'utilisateur simon
-    #  tags: user
-    #  user:
-     #   name: simon
-     #   state: absent
-     #   remove: yes
+  roles:
+    - base
 
 - hosts: monitoring
   become: yes
-  tasks:
-    - name: Assurer que le paquet htop est installé
-      tags: htop
-      package:
-        name: htop
-        state: present
-      when: ansible_distribution in ['Debian', 'Ubuntu']
-    - name: Assurer que le paquet htop est supprimé
-      package:
-        name: htop
-        state: absent
-      when: ansible_distribution == 'Debian'
-    - name: Copier fichier HTML vers /tmp
-      copy:
-        src: default_site.html
-        dest: /tmp/ansible.html
-        owner: root
-        group: root
-        mode: 0644
-    - name: Stopper Apache
-      tags: apache2
-      service:
-        name: apache2
-        state: stopped
-        enabled: no
-      register: httpd
-      when: ansible_distribution in ['Debian']
+  roles:
+    - monitoring
