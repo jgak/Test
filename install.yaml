@@ -1,0 +1,9 @@
+---
+- name: Paquet htop
+  hosts: all
+  become: yes
+  tasks:
+    - name: Assurer que le paquet htop est installé
+      apt:
+        name: htop
+        state: present

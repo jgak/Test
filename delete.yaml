@@ -1,0 +1,9 @@
+---
+- name: Paquet htop
+  hosts: all
+  become: yes
+  tasks:
+    - name: Assurer que le paquet htop est supprimé
+      apt:
+        name: htop
+        state: absent

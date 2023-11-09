@@ -1,0 +1,15 @@
+---
+- name: Paquet htop
+  hosts: monitoring
+  become: yes
+  tasks:
+    - name: Assurer que le paquet htop est installé
+      package:
+        name: htop
+        state: present
+      when: ansible_distribution in ['Debian', 'Ubuntu']
+    - name: Assurer que le paquet htop est supprimé
+      package:
+        name: htop
+        state: absent
+      when: ansible_distribution == 'Debian'

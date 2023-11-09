@@ -1,0 +1,39 @@
+---
+- hosts: all
+  become: yes
+  pre_tasks:
+  - name: Installer les mises à jour
+    tags: always
+    package:
+      #upgrade: dist
+      #update_cache: yes
+
+- hosts: monitoring
+  become: yes
+  tasks:
+    - name: Assurer que le paquet htop est installé
+      tags: htop
+      package:
+        name: htop
+        state: present
+      when: ansible_distribution in ['Debian', 'Ubuntu']
+    - name: Assurer que le paquet htop est supprimé
+      package:
+        name: htop
+        state: absent
+      when: ansible_distribution == 'Debian'
+    - name: Copier fichier HTML vers /tmp
+      copy:
+        src: default_site.html
+        dest: /tmp/ansible.html
+        owner: root
+        group: root
+        mode: 0644
+    - name: Stopper Apache
+      tags: apache2
+      service:
+        name: apache2
+        state: stopped
+        enabled: no
+      register: httpd
+      when: ansible_distribution in ['Debian']
