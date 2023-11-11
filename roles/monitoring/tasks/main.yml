@@ -1,10 +1,11 @@
 - name: Copier fichier HTML vers /tmp
   copy:
-    src: default_site.html
-    dest: /tmp/ansible.html
+    src: "{{ default_html }}"
+    dest: "{{ path_dest }}"
     owner: root
     group: root
     mode: 0644
+  notify: stop_apache
 - name: Stopper Apache
   tags: apache2
   service:
